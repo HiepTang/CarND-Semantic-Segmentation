@@ -174,3 +174,22 @@ def save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_p
 		sess, logits, keep_prob, input_image, os.path.join(data_dir, 'data_road/testing'), image_shape)
 	for name, image in image_outputs:
 		scipy.misc.imsave(os.path.join(output_dir, name), image)
+
+def save_sample_video(data_sub_dir, data_dir, sess, image_shape, logits, keep_prob, input_image):
+	# runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
+	# data_dir = './data'
+	# runs_dir = './runs'
+	runs_dir = './data/videos'
+	output_dir = os.path.join(runs_dir, data_sub_dir+'_result')
+	if os.path.exists(output_dir):
+		shutil.rmtree(output_dir)
+	os.makedirs(output_dir) # where the images are going to be saved
+
+	# Run NN on test images and save them to HD
+	print('Training Finished. Saving test images to: {}'.format(output_dir))
+	image_outputs = gen_test_output(
+		sess, logits, keep_prob, input_image, os.path.join(data_dir, 'videos/'+data_sub_dir), image_shape)
+	for name, image in image_outputs:
+		scipy.misc.imsave(os.path.join(output_dir, name), image)
+
+	print('Finished! Saved images to: {}\n'.format(output_dir))
